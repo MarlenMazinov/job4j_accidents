@@ -42,6 +42,12 @@
                         <label for="address">Адрес</label>
                         <input type="text" class="form-control" name="address" id="address"
                                th:field="${accident.address}"/>
+                        <label for="type.id">Тип</label>
+                        <select class="form-control" id="type.id"  name="type.id">
+                            <option th:each="type: ${types}"
+                                    th:text="${type.name}"
+                                    th:value="${type.id}"></option>
+                        </select>
                     </div>
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>

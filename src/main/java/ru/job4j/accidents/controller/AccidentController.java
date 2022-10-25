@@ -1,28 +1,16 @@
 package ru.job4j.accidents.controller;
 
+import lombok.AllArgsConstructor;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.service.AccidentService;
 
 @Controller
+@AllArgsConstructor
 public class AccidentController {
     private final AccidentService service;
-
-    public AccidentController(AccidentService service) {
-        this.service = service;
-        service.add(new Accident("Инцидент №1", "Пересечение двойной сплошной линии разметки",
-                "г. Краснодар, ул. Мира, д.18"));
-        service.add(new Accident("Инцидент №2", "Парковка в неположенном месте",
-                "г. Краснодар, ул. Ленина, д.1"));
-        service.add(new Accident("Инцидент №3",
-                "Водитель ТС не пропустил пешехода в нарушение правил ПДД",
-                "г. Краснодар, ул. Семашко, д.115"));
-    }
 
     @GetMapping("/accidents")
     public String accidents(Model model) {
@@ -34,6 +22,7 @@ public class AccidentController {
     @GetMapping("/addAccident")
     public String viewCreateAccident(Model model) {
         model.addAttribute("accident", new Accident());
+        model.addAttribute("types", service.findAllTypes());
         model.addAttribute("user", "Petr Arsentev");
         return "createAccidentForm";
     }
@@ -45,18 +34,27 @@ public class AccidentController {
             accident = service.findById(id).get();
         }
         model.addAttribute("accident", accident);
+        model.addAttribute("types", service.findAllTypes());
         model.addAttribute("user", "Petr Arsentev");
         return "editAccidentForm";
     }
 
     @PostMapping("/saveAccident")
-    public String save(@ModelAttribute Accident accident) {
+    public String save(@ModelAttribute Accident accident,
+                       @RequestParam(value = "type.id") int typeId) {
+        if (service.findTypeById(typeId).isPresent()) {
+            accident.setType(service.findTypeById(typeId).get());
+        }
         service.add(accident);
         return "redirect:/index";
     }
 
     @PostMapping("/updateAccident")
-    public String update(@ModelAttribute Accident accident) {
+    public String update(@ModelAttribute Accident accident,
+                         @RequestParam(value = "type.id") int typeId) {
+        if (service.findTypeById(typeId).isPresent()) {
+            accident.setType(service.findTypeById(typeId).get());
+        }
         service.update(accident);
         return "redirect:/index";
     }
