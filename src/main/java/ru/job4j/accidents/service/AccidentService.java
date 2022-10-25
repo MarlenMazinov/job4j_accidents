@@ -20,6 +20,10 @@ private final AccidentMem store;
         store.add(accident);
     }
 
+    public void update(Accident accident) {
+        store.update(accident);
+    }
+
     public Optional<Accident> findById(int id) {
         return store.findById(id);
     }

@@ -14,14 +14,6 @@ public class IndexController {
 
     @GetMapping("/index")
     public String index(Model model) {
-        service.add(new Accident("Инцидент №1", "Пересечение двойной сплошной линии разметки",
-        "г. Краснодар, ул. Мира, д.18"));
-        service.add(new Accident("Инцидент №2", "Парковка в неположенном месте",
-                "г. Краснодар, ул. Ленина, д.1"));
-        service.add(new Accident("Инцидент №3",
-                "Водитель ТС не пропустил пешехода в нарушение правил ПДД",
-                "г. Краснодар, ул. Семашко, д.115"));
-        model.addAttribute("accidents", service.findAll());
         model.addAttribute("user", "Petr Arsentev");
         return "index";
     }

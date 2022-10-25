@@ -1,4 +1,4 @@
-<!doctype html>
+<!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org" lang="en">
 <head>
     <meta charset="utf-8">
@@ -11,25 +11,43 @@
             integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
             integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6" crossorigin="anonymous"></script>
-    <title>Автомобильные инциденты</title>
+    <title>Автомобильные инцеденты</title>
 </head>
 <body>
 <div class="container">
     <nav class="navbar navbar-expand-lg navbar-light bg-light">
-        <a class="navbar-brand" href="#">Автомобильные инциденты</small></a>
-        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup"
-                aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
-            <span class="navbar-toggler-icon"></span>
-        </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="nav-item nav-link active" href="#">Главная</a>
+                <a class="nav-item nav-link" href="#">Главная</a>
                 <a class="nav-item nav-link" th:href="@{/accidents}">Инциденты</a>
                 <a class="nav-item nav-link" th:href="@{/addAccident}">Добавить Инцидент</a>
                 <a class="nav-item nav-link" th:text="${user}"></a>
             </div>
         </div>
     </nav>
+    <div class="row pt-3">
+        <div class="card" style="width: 100%">
+            <div class="card-header">
+                Редактирование инцидента
+            </div>
+            <div class="card-body">
+                <form th:action="@{/updateAccident}" method="POST">
+                    <input type="hidden" name="id" th:field="${accident.id}"/>
+                    <div class="form-group">
+                        <label for="name">Название</label>
+                        <input type="text" class="form-control" name="name" id="name" th:field="${accident.name}"/>
+                        <label for="text">Описание</label>
+                        <input type="text" class="form-control" name="text" id="text"
+                               th:field="${accident.text}"/>
+                        <label for="address">Адрес</label>
+                        <input type="text" class="form-control" name="address" id="address"
+                               th:field="${accident.address}"/>
+                    </div>
+                    <button type="submit" class="btn btn-primary">Сохранить</button>
+                </form>
+            </div>
+        </div>
+    </div>
 </div>
 </body>
 </html>

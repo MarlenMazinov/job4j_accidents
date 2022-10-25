@@ -14,11 +14,17 @@ import java.util.concurrent.atomic.AtomicInteger;
 @ThreadSafe
 public class AccidentMem {
     private final HashMap<Integer, Accident> accidents = new HashMap<>();
-    private AtomicInteger counter = new AtomicInteger(0);
+    private final AtomicInteger counter = new AtomicInteger(0);
 
     public void add(Accident accident) {
         accident.setId(counter.getAndIncrement());
         accidents.put(accident.getId(), accident);
+    }
+
+    public void update(Accident accident) {
+        if (accidents.containsKey(accident.getId())) {
+            accidents.replace(accident.getId(), accident);
+        }
     }
 
     public Optional<Accident> findById(int id) {
@@ -28,4 +34,5 @@ public class AccidentMem {
     public List<Accident> findAll() {
         return new ArrayList<>(accidents.values());
     }
+
 }
