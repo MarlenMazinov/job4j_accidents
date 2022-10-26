@@ -28,11 +28,9 @@ public class AccidentController {
     }
 
     @GetMapping("/editAccident/{accidentId}")
-    public String viewEditAccident(Model model, @PathVariable("accidentId") int id) {
-        Accident accident = new Accident();
-        if (service.findById(id).isPresent()) {
-            accident = service.findById(id).get();
-        }
+    public String viewEditAccident(Model model, @PathVariable("accidentId") int id) throws Exception {
+        Accident accident = service.findById(id)
+                .orElseThrow(() -> new Exception("No accident found with id " + id));
         model.addAttribute("accident", accident);
         model.addAttribute("types", service.findAllTypes());
         model.addAttribute("user", "Petr Arsentev");
@@ -41,20 +39,18 @@ public class AccidentController {
 
     @PostMapping("/saveAccident")
     public String save(@ModelAttribute Accident accident,
-                       @RequestParam(value = "type.id") int typeId) {
-        if (service.findTypeById(typeId).isPresent()) {
-            accident.setType(service.findTypeById(typeId).get());
-        }
+                       @RequestParam(value = "type.id") int typeId) throws Exception {
+        accident.setType(service.findTypeById(typeId)
+                .orElseThrow(() -> new Exception("No accident type found with id " + typeId)));
         service.add(accident);
         return "redirect:/index";
     }
 
     @PostMapping("/updateAccident")
     public String update(@ModelAttribute Accident accident,
-                         @RequestParam(value = "type.id") int typeId) {
-        if (service.findTypeById(typeId).isPresent()) {
-            accident.setType(service.findTypeById(typeId).get());
-        }
+                         @RequestParam(value = "type.id") int typeId) throws Exception {
+        accident.setType(service.findTypeById(typeId)
+                .orElseThrow(() -> new Exception("No accident type found with id " + typeId)));
         service.update(accident);
         return "redirect:/index";
     }

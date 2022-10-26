@@ -16,15 +16,27 @@ public class AccidentMem {
 
     private final AtomicInteger counter = new AtomicInteger(0);
 
+    public AccidentMem() {
+        addTypes(List.of(new AccidentType(0, "Две машины"),
+                new AccidentType(1, "Машина и человек"),
+                new AccidentType(2, "Машина и велосипед")));
+        add(new Accident("Инцидент №1", "Столкновение двух ТС вследствие несоблюдения дистанции",
+                "г. Краснодар, ул. Мира, д.18", findTypeById(0).get()));
+        add(new Accident("Инцидент №2",
+                "Водитель ТС не пропустил пешехода в нарушение правил ПДД",
+                "г. Краснодар, ул. Ленина, д.1", findTypeById(1).get()));
+        add(new Accident("Инцидент №3",
+                "Водитель ТС столкнулся с велосипедистом",
+                "г. Краснодар, ул. Семашко, д.115", findTypeById(2).get()));
+    }
+
     public void add(Accident accident) {
         accident.setId(counter.getAndIncrement());
         accidents.put(accident.getId(), accident);
     }
 
     public void update(Accident accident) {
-        if (accidents.containsKey(accident.getId())) {
-            accidents.replace(accident.getId(), accident);
-        }
+        accidents.replace(accident.getId(), accident);
     }
 
     public Optional<Accident> findById(int id) {
