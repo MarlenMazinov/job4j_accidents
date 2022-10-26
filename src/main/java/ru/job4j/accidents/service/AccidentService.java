@@ -5,16 +5,18 @@ import net.jcip.annotations.ThreadSafe;
 import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
+import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.repository.AccidentMem;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 
 @Service
 @ThreadSafe
 @AllArgsConstructor
 public class AccidentService {
-private final AccidentMem store;
+    private final AccidentMem store;
 
     public void add(Accident accident) {
         store.add(accident);
@@ -38,5 +40,13 @@ private final AccidentMem store;
 
     public List<AccidentType> findAllTypes() {
         return store.findAllTypes();
+    }
+
+    public List<Rule> findAllRules() {
+        return store.findAllRules();
+    }
+
+    public Set<Rule> findRulesByIds(String[] ids) {
+        return store.findRulesByIds(ids);
     }
 }
