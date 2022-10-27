@@ -5,12 +5,10 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 import ru.job4j.accidents.model.Accident;
-import ru.job4j.accidents.model.Rule;
 import ru.job4j.accidents.service.AccidentService;
 
 import javax.servlet.http.HttpServletRequest;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.NoSuchElementException;
 
 @Controller
 @AllArgsConstructor
@@ -35,9 +33,9 @@ public class AccidentController {
     }
 
     @GetMapping("/editAccident/{accidentId}")
-    public String viewEditAccident(Model model, @PathVariable("accidentId") int id) throws Exception {
+    public String viewEditAccident(Model model, @PathVariable("accidentId") int id) {
         Accident accident = service.findById(id)
-                .orElseThrow(() -> new Exception("No accident found with id " + id));
+                .orElseThrow(NoSuchElementException::new);
         model.addAttribute("accident", accident);
         model.addAttribute("types", service.findAllTypes());
         model.addAttribute("rules", service.findAllRules());
@@ -48,9 +46,9 @@ public class AccidentController {
     @PostMapping("/saveAccident")
     public String save(@ModelAttribute Accident accident,
                        @RequestParam(value = "type.id") int typeId,
-                       HttpServletRequest req) throws Exception {
+                       HttpServletRequest req) {
         accident.setType(service.findTypeById(typeId)
-                .orElseThrow(() -> new Exception("No accident type found with id " + typeId)));
+                .orElseThrow(NoSuchElementException::new));
         String[] ids = req.getParameterValues("rIds");
         accident.setRules(service.findRulesByIds(ids));
         service.add(accident);
@@ -60,9 +58,9 @@ public class AccidentController {
     @PostMapping("/updateAccident")
     public String update(@ModelAttribute Accident accident,
                          @RequestParam(value = "type.id") int typeId,
-                         HttpServletRequest req) throws Exception {
+                         HttpServletRequest req) {
         accident.setType(service.findTypeById(typeId)
-                .orElseThrow(() -> new Exception("No accident type found with id " + typeId)));
+                .orElseThrow(NoSuchElementException::new));
         String[] ids = req.getParameterValues("rIds");
         accident.setRules(service.findRulesByIds(ids));
         service.update(accident);
