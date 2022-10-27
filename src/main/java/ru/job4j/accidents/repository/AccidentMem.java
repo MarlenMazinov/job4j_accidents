@@ -82,8 +82,8 @@ public class AccidentMem {
 
     public Set<Rule> findRulesByIds(String[] ids) {
         Set<Rule> set = new HashSet<>();
-        for (int i = 0; i < ids.length; i++) {
-            set.add(findRuleById(Integer.parseInt(ids[i])).orElseThrow());
+        for (String id : ids) {
+            set.add(findRuleById(Integer.parseInt(id)).orElseThrow());
         }
         return set;
     }
