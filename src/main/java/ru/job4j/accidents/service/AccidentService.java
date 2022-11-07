@@ -6,6 +6,7 @@ import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.model.Rule;
+import ru.job4j.accidents.repository.AccidentJdbcTemplate;
 import ru.job4j.accidents.repository.AccidentMem;
 
 import java.util.List;
@@ -16,14 +17,14 @@ import java.util.Set;
 @ThreadSafe
 @AllArgsConstructor
 public class AccidentService {
-    private final AccidentMem store;
+    private final AccidentJdbcTemplate store;
 
-    public void add(Accident accident) {
-        store.add(accident);
+    public void add(Accident accident, String[] rIds) {
+        store.add(accident, rIds);
     }
 
-    public void update(Accident accident) {
-        store.update(accident);
+    public void update(Accident accident, String[] rIds) {
+        store.update(accident, rIds);
     }
 
     public Optional<Accident> findById(int id) {
@@ -44,9 +45,5 @@ public class AccidentService {
 
     public List<Rule> findAllRules() {
         return store.findAllRules();
-    }
-
-    public Set<Rule> findRulesByIds(String[] ids) {
-        return store.findRulesByIds(ids);
     }
 }

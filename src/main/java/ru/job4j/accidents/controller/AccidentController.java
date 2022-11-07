@@ -18,7 +18,6 @@ public class AccidentController {
     @GetMapping("/accidents")
     public String accidents(Model model) {
         model.addAttribute("accidents", service.findAll());
-        model.addAttribute("rules", service.findAllRules());
         model.addAttribute("user", "Petr Arsentev");
         return "accidentsView";
     }
@@ -49,9 +48,8 @@ public class AccidentController {
                        HttpServletRequest req) {
         accident.setType(service.findTypeById(typeId)
                 .orElseThrow(NoSuchElementException::new));
-        String[] ids = req.getParameterValues("rIds");
-        accident.setRules(service.findRulesByIds(ids));
-        service.add(accident);
+        String[] rIds = req.getParameterValues("rIds");
+        service.add(accident, rIds);
         return "redirect:/index";
     }
 
@@ -61,9 +59,8 @@ public class AccidentController {
                          HttpServletRequest req) {
         accident.setType(service.findTypeById(typeId)
                 .orElseThrow(NoSuchElementException::new));
-        String[] ids = req.getParameterValues("rIds");
-        accident.setRules(service.findRulesByIds(ids));
-        service.update(accident);
+        String[] rIds = req.getParameterValues("rIds");
+        service.update(accident, rIds);
         return "redirect:/index";
     }
 }
