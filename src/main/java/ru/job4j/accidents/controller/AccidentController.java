@@ -46,10 +46,8 @@ public class AccidentController {
     public String save(@ModelAttribute Accident accident,
                        @RequestParam(value = "type.id") int typeId,
                        HttpServletRequest req) {
-        accident.setType(service.findTypeById(typeId)
-                .orElseThrow(NoSuchElementException::new));
         String[] rIds = req.getParameterValues("rIds");
-        service.add(accident, rIds);
+        service.add(accident, typeId, rIds);
         return "redirect:/index";
     }
 
@@ -57,10 +55,8 @@ public class AccidentController {
     public String update(@ModelAttribute Accident accident,
                          @RequestParam(value = "type.id") int typeId,
                          HttpServletRequest req) {
-        accident.setType(service.findTypeById(typeId)
-                .orElseThrow(NoSuchElementException::new));
         String[] rIds = req.getParameterValues("rIds");
-        service.update(accident, rIds);
+        service.update(accident, typeId, rIds);
         return "redirect:/index";
     }
 }
