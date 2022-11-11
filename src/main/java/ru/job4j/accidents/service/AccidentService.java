@@ -6,10 +6,9 @@ import org.springframework.stereotype.Service;
 import ru.job4j.accidents.model.Accident;
 import ru.job4j.accidents.model.AccidentType;
 import ru.job4j.accidents.model.Rule;
-import ru.job4j.accidents.repository.AccidentHibernate;
-import ru.job4j.accidents.repository.AccidentJdbcTemplate;
-import ru.job4j.accidents.repository.AccidentMem;
+import ru.job4j.accidents.repository.*;
 
+import java.util.HashSet;
 import java.util.List;
 import java.util.Optional;
 import java.util.Set;
@@ -18,33 +17,34 @@ import java.util.Set;
 @ThreadSafe
 @AllArgsConstructor
 public class AccidentService {
-    private final AccidentHibernate store;
+    private final AccidentRepository accidentStore;
+    private final AccidentTypeRepository accidentTypeStore;
+    private final RuleRepository ruleStore;
 
-    public void add(Accident accident, int typeId, String[] rIds) {
-        store.add(accident, typeId, rIds);
-    }
-
-    public void update(Accident accident, int typeId, String[] rIds) {
-        store.update(accident, typeId, rIds);
+    public void saveOrUpdate(Accident accident, String[] rIds) {
+        Set<Rule> rules = new HashSet<>();
+        if (rIds != null && rIds.length > 0) {
+            for (String rId : rIds) {
+                rules.add(ruleStore.findById(Integer.parseInt(rId)).get());
+            }
+        }
+        accident.setRules(rules);
+        accidentStore.save(accident);
     }
 
     public Optional<Accident> findById(int id) {
-        return store.findById(id);
+        return accidentStore.findById(id);
     }
 
     public List<Accident> findAll() {
-        return store.findAll();
+        return accidentStore.findAll();
     }
 
-    /*public Optional<AccidentType> findTypeById(int id) {
-        return store.findTypeById(id);
-    }*/
-
     public List<AccidentType> findAllTypes() {
-        return store.findAllTypes();
+        return (List<AccidentType>) accidentTypeStore.findAll();
     }
 
     public List<Rule> findAllRules() {
-        return store.findAllRules();
+        return (List<Rule>) ruleStore.findAll();
     }
 }
