@@ -15,13 +15,6 @@ import java.util.NoSuchElementException;
 public class AccidentController {
     private final AccidentService service;
 
-    @GetMapping("/accidents")
-    public String accidents(Model model) {
-        model.addAttribute("accidents", service.findAll());
-        model.addAttribute("user", "Petr Arsentev");
-        return "accidentsView";
-    }
-
     @GetMapping("/addAccident")
     public String viewCreateAccident(Model model) {
         model.addAttribute("accident", new Accident());
@@ -31,8 +24,8 @@ public class AccidentController {
         return "createAccidentForm";
     }
 
-    @GetMapping("/editAccident/{accidentId}")
-    public String viewEditAccident(Model model, @PathVariable("accidentId") int id) {
+    @GetMapping("/editAccident")
+    public String viewEditAccident(Model model, @RequestParam("id") int id) {
         Accident accident = service.findById(id)
                 .orElseThrow(NoSuchElementException::new);
         model.addAttribute("accident", accident);
