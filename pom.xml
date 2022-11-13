@@ -199,7 +199,12 @@
         <artifactId>liquibase-maven-plugin</artifactId>
         <version>3.6.2</version>
         <configuration>
-          <propertyFile>db/liquibase.properties</propertyFile>
+          <changeLogFile>${basedir}/db/master.xml</changeLogFile>
+          <url>${db.url}</url>
+          <driver>${db.driver}</driver>
+          <username>${db.username}</username>
+          <password>${db.password}</password>
+          <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
         </configuration>
         <executions>
           <execution>
