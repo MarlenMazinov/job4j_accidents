@@ -40,7 +40,7 @@ public class AccidentController {
                        HttpServletRequest req) {
         String[] rIds = req.getParameterValues("rIds");
         service.saveOrUpdate(accident, rIds);
-        return "redirect:/index";
+        return "redirect:/";
     }
 
     @PostMapping("/updateAccident")
@@ -48,6 +48,6 @@ public class AccidentController {
                          HttpServletRequest req) {
         String[] rIds = req.getParameterValues("rIds");
         service.saveOrUpdate(accident, rIds);
-        return "redirect:/index";
+        return "redirect:/";
     }
 }

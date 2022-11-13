@@ -1,4 +1,4 @@
-create table accidents
+create table if not exists accidents
 (
     id   serial primary key,
     name varchar(2000),

@@ -16,7 +16,7 @@ public class IndexController {
 
     private final AccidentService accidentService;
 
-    @GetMapping("/index")
+    @GetMapping("/")
     public String index(Model model) {
         List<Accident> accidents = accidentService.findAll();
         model.addAttribute("user", SecurityContextHolder.getContext().getAuthentication()
