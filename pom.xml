@@ -30,9 +30,7 @@
         <db.password></db.password>
         <db.driver>org.h2.Driver</db.driver>
       </properties>
-      <activation>
-        <activeByDefault>true</activeByDefault>
-      </activation>
+
     </profile>
     <profile>
       <id>production</id>
@@ -42,7 +40,9 @@
         <db.password>password</db.password>
         <db.driver>org.postgresql.Driver</db.driver>
       </properties>
-
+      <activation>
+        <activeByDefault>true</activeByDefault>
+      </activation>
     </profile>
   </profiles>
 
@@ -199,12 +199,7 @@
         <artifactId>liquibase-maven-plugin</artifactId>
         <version>3.6.2</version>
         <configuration>
-          <changeLogFile>${basedir}/db/master.xml</changeLogFile>
-          <url>${db.url}</url>
-          <driver>${db.driver}</driver>
-          <username>${db.username}</username>
-          <password>${db.password}</password>
-          <promptOnNonLocalDatabase>false</promptOnNonLocalDatabase>
+          <propertyFile>db/liquibase.properties</propertyFile>
         </configuration>
         <executions>
           <execution>
