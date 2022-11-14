@@ -1,6 +1,7 @@
 package ru.job4j.accidents.controller;
 
 import lombok.AllArgsConstructor;
+import org.postgresql.util.PSQLException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -24,14 +25,15 @@ public class RegController {
 
     @PostMapping("/reg")
     public String regSave(@ModelAttribute User user, Model model) {
-        if (users.findByUsername(user.getUsername()) != null) {
-            model.addAttribute("errorMessage", "This account is already exists");
-            return "reg";
-        }
         user.setEnabled(true);
         user.setPassword(encoder.encode(user.getPassword()));
         user.setAuthority(authorities.findByAuthority("ROLE_USER"));
-        users.save(user);
+        try {
+            users.save(user);
+        } catch (Exception exception) {
+            model.addAttribute("errorMessage", "This account is already exists");
+            return "reg";
+        }
         return "redirect:/login";
     }
 }
